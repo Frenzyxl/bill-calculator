@@ -8,7 +8,6 @@ safe_eval = Interpreter()
 
 @app.route('/calculate', methods=['POST'])
 def calculate():
-    print("Origin:", request.headers.get("Origin"))
     data = request.json
     formula = data.get("formula")
     variables = data.get("variables", {})
@@ -19,10 +18,9 @@ def calculate():
 
     try:
         result = safe_eval.eval(formula)  # <-- this is the key fix
-        print("Evaluated result:", result)
         return jsonify({"result": result})
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
